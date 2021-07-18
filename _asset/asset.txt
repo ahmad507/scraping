@@ -1,0 +1,115 @@
+    def __ganti_bahasa(self):
+        attempt = 0
+        try:
+            log.info('ganti bahasa')
+            button = self.driver.find_elements_by_xpath('//button')
+            f = open('file.txt', 'w')
+            f.write(repr(button))
+            f.close()
+            # Menunggu button Bahasa | English muncul
+            while (type(button) is list and len(button) < 1) and attempt <= 5:
+                button = self.driver.find_elements_by_xpath('//button')
+                log.info('ulang lagi')
+                attempt += 1
+                sleep(1)
+            # [0] Bahasa [1] English [2] Login
+            button[0].click()
+            log.info('klik bahasa')
+            WebDriverWait(self.driver, 2).until(exp_cond.element_to_be_clickable(
+                (By.XPATH, "//label[contains(.,'ID Perusahaan')]//following::input[1]")))
+            self.driver.save_screenshot("ss/{}-home.png".format(self.rekening))
+            log.info('selesai')
+        except Exception as e:
+            raise CatchError(e.args)
+
+    def __set_driver(self):
+        """pilih driver"""
+        try:
+            """Chrome (belum dicoba, krn ke blok)
+            driver_path = 'd:/web/Mandiri_mcm2/app/chromedriver.exe'
+            options = webdriver.ChromeOptions()
+            options.add_argument("--window-size=1920,1200")  # for Chrome only
+            options.headless = True
+            self.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+            """
+            """Firefox"""
+            # bila tidak bisa sebaiknya tulis path lengkap dahulu
+            driver_path = 'd:/web/Mandiri_mcm2/geckodriver.exe'
+            options = webdriver.FirefoxOptions()
+            options.headless = True
+            options.profile = FirefoxProfile()
+            # options.page_load_strategy = 'eager'  # normal, none (default = normal)
+            self.driver = webdriver.Firefox(executable_path=driver_path, options=options)
+            """end choice"""
+            self.driver.get('https://mcm2.bankmandiri.co.id/corporate/#!/login')
+        except Exception as e:
+            raise CatchError(e.args)
+
+
+f = open('file.txt', 'w')
+f.write(repr(form.get_attribute('outerHTML')))
+f.close()
+
+class SetProfile(object):
+    def __init__(self):
+        self.appname = 'SetProfile'
+
+    def get_firefox_driver(self, download_dir=None, use_profile=False, headless=False):
+        # about:support (Mozilla Profile)
+        try:
+            if download_dir is None:
+                download_dir = os.getcwd()
+            if use_profile:
+                try:
+                    fp = webdriver.FirefoxProfile(
+                        r'C:\Users\MDDT0040\AppData\Roaming\Mozilla\Firefox\Profiles\u5jvcbqp.dev-edition-default-1525796820341', )
+                except:
+                    log.info('cant get profile')
+                    fp = webdriver.FirefoxProfile()
+            else:
+                fp = webdriver.FirefoxProfile()
+
+            fp.set_preference("browser.download.folderList", int(2))
+            fp.set_preference("browser.download.manager.showWhenStarting", False)
+            fp.set_preference("browser.download.manager.showAlertOnComplete", False)
+            fp.set_preference("browser.download.dir", download_dir)
+            fp.set_preference('browser.helperApps.neverAsk.saveToDisk',
+                              "text/csv,text/comma-separated-values,text/comma-separated-values;charset=UTF-8")
+            if headless:
+                options = Options()
+                options.headless = True
+                return webdriver.Firefox(firefox_profile=fp, firefox_options=options)
+            else:
+                return webdriver.Firefox(firefox_profile=fp)
+        except Exception as e:
+            raise CatchError(e.args, self.appname)
+
+    def set_profile(self):
+        try:
+            # 1- set profile
+            #profile = os.getcwd()
+            profile = os.path.dirname(sys.argv[0]) + "/selenita"
+            log.info(repr(profile))
+            fp = webdriver.FirefoxProfile(profile)
+            driver = webdriver.Firefox(firefox_profile=fp)
+            #driver = webdriver.Firefox()
+
+            # 2- get tmp file location
+            profiletmp = driver.firefox_profile.path
+
+            # but... the current profile is a copy of the original profile :/
+            log.info("running profile " + profiletmp)
+
+            driver.get("http://httpbin.org")
+            sleep(10)
+            # raw_input("Press a key when finish doing things") # I've installed an extension
+
+            # 3- then save back
+            print("saving profile " + profiletmp + " to " + profile)
+            if os.system("cp -R " + profiletmp + "/* " + profile):
+                print("files should be copied :/")
+
+            driver.quit()
+        except Exception as e:
+            raise CatchError(e.args, self.appname)
+

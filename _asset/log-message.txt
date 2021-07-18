@@ -1,0 +1,16 @@
+    def akbarstyle(self, message, appname='remote'):
+        exc_type, exc_obj, tb = sys.exc_info()
+        lineno = tb.tb_lineno
+
+
+filename = f.f_code.co_filename
+linecache.checkcache(filename)
+code = linecache.getline(filename, lineno, f.f_globals)
+('{}, line {}) {} {}'.format(filename, lineno, code.strip(), exc_obj))
+
+logging.basicConfig(
+    # filename='myapp.log',  # (buka ini, utk lihat save log)
+    level=logging.ERROR,  # untuk lihat INFO, level=logging.INFO
+    format='%(asctime)s.%(msecs)03d %(module)s->%(funcName)s: %(levelname)s: %(''message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)

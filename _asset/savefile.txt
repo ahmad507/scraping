@@ -1,0 +1,25 @@
+self.driver.get('https://mcm2.bankmandiri.co.id/corporate/#!/login')
+
+f = open('file.txt', 'w')
+f.write(repr(self.driver.page_source)) // file besar sekali (krn seluruh source)
+f.close()
+
+main_frame = self.driver.find_elements_by_id('main-iframe')  # bila ada iframe
+self.driver.switch_to.frame(main_frame[0])   # switch ke iframe nya
+
+f = open('file.txt', 'w')
+f.write(repr(main_frame))
+f.close()
+# (hasil ada 1) [<selenium.webdriver.remote.webelement.WebElement (session="f5ff", element="29428")>]
+# (hasil ada 2) [<xxx>, <yyy>]
+# artinya hasil 1, yaitu main_frame[0]
+
+form.find_element_by_xpath("//label[contains(.,'Kata Sandi')]//following::input[1]").send_keys(password)
+form.find_element_by_xpath(".//*[@type='submit']").click()
+sleep(1)  # kadang belum muncul
+
+f = open('file.txt', 'w')
+f.write(repr(form.get_attribute('outerHTML')))
+f.close()
+# innerHTML untuk lihat apa yg diisi
+"""

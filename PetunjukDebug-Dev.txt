@@ -1,0 +1,21 @@
+Module Selenium dan Python
+
+Untuk print INFO, setting di app.remote.errorhandler.py
+
+
+--Agar bisa mengetest dengan browser langsung--
+    Lihat di mainscript.py (class MainScript)
+    - pada method start_driver -> set headless=False
+
+Tes di browser:
+    dengan urutan wajib start_driver dulu
+    (LIHAT DI module.routes.py)
+    contoh: localhost:1993/{module}/startdriver -> localhost:1993/mandirimcm/startdriver
+            localhost:1993/{module}quitdriver
+    Akan muncul Browser Chrome/Firefox
+    set headless=False di MainScript
+    Tips: utk akses existing Chrome
+    cth:
+    "c:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9515 --user-data-dir="d:\web\BankScript\chromedriver"
+
+    usahakan cek 1 per 1 sebelum autorun dipanggil
