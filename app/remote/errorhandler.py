@@ -8,18 +8,19 @@ logging.basicConfig(
 )
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)  # set level, Production -> ERROR, Development -> INFO/DEBUG
+log.setLevel(logging.ERROR)  # set level, Production -> ERROR, Development -> INFO/DEBUG
 
 
-class MyException(Exception):
-    def __init__(self):
-        Exception.__init__(self)
-        # sys.tracebacklimit = 0  # Tutup untuk lihat traceback
+def err_catch(e_less):
+    message = e_less
+    try:
         exc_type, exc_obj, tb = sys.exc_info()
         f = tb.tb_frame
         lineno = tb.tb_lineno
         filename = f.f_code.co_filename
-        self.message = ('"{}", Line {}, {}'.format(filename, lineno, repr(exc_obj)))
+        message = ('"{}", Line {}, {}'.format(filename, lineno, repr(exc_obj)))
+    except Exception as e:
+        log.error('Tolong benarin errorhandler.py')
+        log.error(e)
 
-    def __STR__(self):
-        return self.message
+    return message

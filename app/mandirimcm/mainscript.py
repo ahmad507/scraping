@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as condition
 from selenium.webdriver.support.wait import WebDriverWait as Wait
 
 import app
-from app.remote.errorhandler import MyException, log
+from app.remote.errorhandler import log, err_catch
 
 
 class MainScript(object):
@@ -17,11 +17,19 @@ class MainScript(object):
         self.driver = None
         self.headless = True  # Bila ingin jalankan Web headless=False (jangan di Production)
 
-    # def __screenshot(self):
-    #     try:
-    #         if self.driver is not None:
-    #             self.driver.save_screenshot("ss/mandirimcm/{}-autorun-fail.png".format(self.rekening))
-    #
+    def __ss(self, funct_name):
+        result = False
+        try:
+            if self.driver is not None:
+                result = self.driver.save_screenshot('ss/mandirimcm/{}-{}.png'.format(self.rekening, funct_name))
+        except Exception as e:
+            log.error('Gagal capture!!!')
+            log.error(str(e.args) + ', ' + str(result))
+        # finally:
+        #     if result is True:
+        #         log.info('mandirimcm/{}-{}.png berhasil disimpan'.format(self.rekening, funct_name))
+        #     else:
+        #         log.info('mandirimcm/{}-{}.png GAGAL dicapture'.format(self.rekening, funct_name))
 
     def autorun(self, company, username, password, rekening=None, from_date=None, to_date=None):
         result = []
@@ -39,9 +47,9 @@ class MainScript(object):
             self.login(company, username, password)
             # self.ambil_mutasi(from_date, to_date)
             self.logout()
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-autorun-fail.png".format(rekening))
-            log.error(e.args)
+        except Exception as e:
+            self.__ss('autorun-except')
+            log.error(err_catch(e))
         finally:  # driver selalu di quit/close
             if self.is_login:
                 self.logout()
@@ -52,32 +60,35 @@ class MainScript(object):
 
     def start_driver(self):
         try:
+            log.info('Start Driver')
             driver = app.ChromeDriver()  # Pilih driver: ChromeDriver() atau FirefoxDriver()
             headless = self.headless
             self.driver = driver.set_driver(headless=headless, write_log=False)
             self.driver.get(self._url)
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-start_driver-fail.png".format(self.rekening))
-            raise log.error(e.args)  # Stop bila gagal
+        except Exception as e:
+            log.error(err_catch(e))
+            raise Exception(e)  # Stop bila gagal
         finally:
-            log.info('Start Driver')
+            # self.__ss('start_driver')
+            pass  # Jarang gagal
 
     def ganti_bahasa(self):
         try:
+            log.info('Ganti Bahasa')
             Wait(self.driver, 15).until(condition.presence_of_element_located(
                 (By.XPATH, "//h4[contains(.,'Please Login')]")
             ))
             button = self.driver.find_elements_by_xpath('//button')
             # [0] Bahasa [1] English [2] Login
             button[0].click()
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-ganti_bahasa-fail.png".format(self.rekening))
-            raise log.error(e.args)  # Stop bila gagal
+        except Exception as e:
+            log.error(err_catch(e))
+            raise Exception(e)  # Stop bila gagal
         finally:
-            log.info('Ganti Bahasa')
+            self.__ss('ganti_bahasa')
 
     def ambil_mutasi(self, from_date, to_date):
-        self.driver.save_screenshot("ss/mandirimcm/{}-ambil_mutasi-fail.png".format(self.rekening))
+        self.__ss('ambil_mutasi')
         pass
 
     def login(self, company, username, password):
@@ -98,10 +109,12 @@ class MainScript(object):
                 (By.CLASS_NAME, 'icon-logout')
             ))
             self.is_login = True
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-login-fail.png".format(self.rekening))
-            raise log.error(e.args)  # Stop bila tidak bisa login
+        except Exception as e:
+            self.__ss('login-fail')
+            log.error(err_catch(e))
+            raise Exception(e)  # Stop bila tidak bisa login
         finally:
+            self.__ss('login')
             if self.is_login:
                 log.info('Login Berhasil')
             else:
@@ -109,6 +122,7 @@ class MainScript(object):
 
     def logout(self):
         try:
+            log.info('Logout')
             Wait(self.driver, 5).until(condition.element_to_be_clickable(
                 (By.CLASS_NAME, 'icon-logout')
             ))
@@ -119,29 +133,32 @@ class MainScript(object):
                 (By.XPATH, "//h2[contains(.,'Keluar')]")
             ))
             self.is_login = False
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-logout-fail.png".format(self.rekening))
-            log.error(e.args)
+        except (AttributeError, Exception) as e:
+            log.error(err_catch(e))
         finally:
-            log.info('Logout')
+            self.__ss('logout')
 
     def close_popup(self):
+        # noinspection PyBroadException
         try:
-            self.driver.find_element_by_id('prompting-button').click()
-        except MyException as e:
-            self.driver.save_screenshot("ss/mandirimcm/{}-close_popup-fail.png".format(self.rekening))
-            log.error(e.args)
-        finally:
             log.info('Close Popup')
+            self.driver.find_element_by_id('prompting-button').click()
+        except Exception as e:
+            self.driver.save_screenshot("ss/mandirimcm/{}-close_popup-fail.png".format(self.rekening))
+            log.error(err_catch(e))
+        finally:
+            self.__ss('close_popup')
 
     def close_tab(self):
+        # noinspection PyBroadException
         try:
             self.driver.close()
-        except MyException as e:
-            log.error(e.args)
+        except Exception as e:
+            log.error(err_catch(e))
 
     def quit_driver(self):
+        # noinspection PyBroadException
         try:
             self.driver.quit()
-        except MyException as e:
-            log.error(e.args)
+        except Exception as e:
+            log.error(err_catch(e))

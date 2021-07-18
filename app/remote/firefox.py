@@ -2,17 +2,18 @@ import os
 
 from selenium import webdriver
 
-from app.remote.errorhandler import MyException, log
+from app.remote.errorhandler import err_catch, log
 
 
 class RemoteDriver(object):
     def __init__(self):
         self.options = webdriver.FirefoxOptions()
+        # noinspection PyBroadException
         try:
             profile = 'firefox_profile'
             self.fp = webdriver.FirefoxProfile(profile)
-        except MyException as e:
-            log.error(e.args)
+        except Exception as e:
+            log.error(err_catch(e))
             log.error('Tolong Copy firefox_profile')
             self.fp = webdriver.FirefoxProfile()
 
