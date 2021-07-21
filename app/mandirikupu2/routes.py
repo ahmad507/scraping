@@ -1,15 +1,17 @@
+from datetime import datetime
+
 from flask import Blueprint, request, jsonify
 
 import app
 
-bot = app.MandiriMcm(request)
+bot = app.IbankBca(request)
 
-urls = Blueprint('mandirimcm', __name__, )
+urls = Blueprint('mandirikupu2', __name__, )
 
 
 @urls.route('/')
 def index():
-    return 'Hello, dari Mandiri MCM', 200
+    return 'Hello, dari Mandiri Kupu-kupu', 200
 
 
 @urls.route('/startdriver')
@@ -27,9 +29,9 @@ def ganti_bahasa():
 @urls.route('/login')
 def login():
     bot.login(
-        company='xxxx',
-        username='xxxx',
-        password='xxxxxx',
+        company='xxx',
+        username='xxxxx',
+        password='xxxx',
     )
     return 'login', 200
 
@@ -54,7 +56,7 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxxx', '07/07/2021', '15/07/2021')
+    result = bot.ambil_mutasi('xxxxxxxx', '07/07/2021', '15/07/2021')
     return jsonify(result), 200
 
 
@@ -68,7 +70,7 @@ def close_popup():
 def mutasi():
     result = {
         'message':
-            'Required POST: company, username, password, rekening'
+            'Required POST: company, username, password, rekening, from_date, to_date'
     }
     status = 422
 
@@ -80,18 +82,20 @@ def mutasi():
             username=request.form.get('username'),
             password=request.form.get('password'),
             rekening=request.form.get('rekening'),
-            # from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%m/%d/%Y'),
-            # to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%m/%d/%Y')
+            from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%m/%d/%Y'),
+            to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%m/%d/%Y')
         )
         result = response
         status = 200
     # else:
     #     scraping = app.MandiriMcm()
     #     response = scraping.autorun(
-    #         company='xxxxx',
-    #         username='xxxx',
-    #         password='xxxxx',
-    #         rekening='xxxxxx',
+    #         company='xxxx',
+    #         username='xxxxx',
+    #         password='xxxx',
+    #         rekening='xxxx',
+    #         from_date='01/07/2021',
+    #         to_date='15/07/2021',
     #     )
     #     result = response
     #     status = 201

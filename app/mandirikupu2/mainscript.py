@@ -13,7 +13,7 @@ from app.remote.errorhandler import log, err_catch, log_driver, headless_web
 
 class MainScript(object):
     def __init__(self, rekening='ss_test'):
-        self._url = 'https://mcm2.bankmandiri.co.id'
+        self._url = 'https://ibank.bankmandiri.co.id/retail3/'
         self.rekening = rekening
         self.is_login = False
         self.driver = None
@@ -22,7 +22,7 @@ class MainScript(object):
         result = False
         try:
             if self.driver is not None:
-                result = self.driver.save_screenshot('ss/mandirimcm/{}-{}.png'.format(self.rekening, funct_name))
+                result = self.driver.save_screenshot('ss/mandirikupu2/{}-{}.png'.format(self.rekening, funct_name))
         except Exception as e:
             log.error('Gagal capture!!!')
             log.error(str(e.args) + ', ' + str(result))
@@ -41,7 +41,7 @@ class MainScript(object):
             log.info('MULAI')
             self.start_driver()
             # self.close_popup()  # bila ada popup
-            self.ganti_bahasa()
+            # self.ganti_bahasa()
             self.login(company, username, password)
             result = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             self.logout()
@@ -75,42 +75,19 @@ class MainScript(object):
     def ganti_bahasa(self):
         try:
             log.info('Ganti Bahasa')
-            Wait(self.driver, 15).until(condition.element_to_be_clickable(
-                (By.XPATH, "//button[contains(.,'Bahasa')]")
-            ))
-            self.driver.find_element(By.XPATH, "//button[contains(.,'Bahasa')]").click()
+            raise Exception('Dalam development')
         except Exception as e:
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
         finally:
             self.__ss('ganti_bahasa')
 
-    # noinspection DuplicatedCode,PyUnusedLocal
+    # noinspection PyUnusedLocal
     def ambil_mutasi(self, rekening=None, from_date=None, to_date=None):
         result = []
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 20).until(condition.element_to_be_clickable(
-                (By.LINK_TEXT, 'Rekening')
-            )).click()
-            self.driver.find_element_by_xpath("//span[contains(.,'Rekening Koran')]").click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
-                (By.XPATH, "//h2[contains(.,'Inkuiri Rekening Koran')]")
-            ))
-            el_select = Select(self.driver.find_element(By.XPATH, "//select"))
-            el_select.select_by_visible_text('Perorangan')
-            Wait(self.driver, 1).until(condition.element_to_be_clickable(
-                (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
-            )).click()
-            Wait(self.driver, 1).until(condition.element_to_be_clickable(
-                (By.XPATH, "//span[contains(.,'" + rekening + "')]")
-            )).click()
-            el_select = Select(self.driver.find_element(By.NAME, 'postingDate'))
-            el_select.select_by_visible_text('Hari ini')
-            self.driver.find_element_by_xpath("//button[@type='submit']").click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
-                (By.XPATH, "//div[contains(@class, 'tbody')]")
-            ))
+            raise Exception('Dalam development')
             # sleep(3);save_file(self.driver.page_source)  # Save buat test scrap file html (lihat di main routes.py)
             # copy dari main routes.py /testscrap
             table_ = Pq(self.driver.page_source)('.table-div')
@@ -138,20 +115,7 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
-                (By.XPATH, "//input[@type='password']")
-            ))
-            form = self.driver.find_element_by_xpath(".//ancestor::form")  # Batasi dari <form hingga </form>
-            # Check benar-benar bahasa
-            form.find_element_by_xpath("//label[contains(.,'ID Perusahaan')]//following::input[1]").send_keys(
-                company)
-            form.find_element_by_xpath("//label[contains(.,'ID Pengguna')]//following::input[1]").send_keys(
-                username)
-            form.find_element_by_xpath("//input[@type='password']").send_keys(password)
-            form.find_element_by_xpath("//button[@type='submit']").click()
-            Wait(self.driver, 10).until(condition.element_to_be_clickable(
-                (By.CLASS_NAME, 'icon-logout')
-            ))
+            raise Exception('Dalam development')
             self.is_login = True
         except Exception as e:
             log.error(err_catch(e))
@@ -166,15 +130,7 @@ class MainScript(object):
     def logout(self):
         try:
             log.info('Logout')
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
-                (By.CLASS_NAME, 'icon-logout')
-            ))
-            sleep(0.5)  # sering ada warning sebelum logout
-            self.driver.find_element_by_class_name('icon-logout').click()
-            # Tunggu sampai benar-benar keluar
-            Wait(self.driver, 5).until(condition.presence_of_element_located(
-                (By.XPATH, "//h2[contains(.,'Keluar')]")
-            ))
+            raise Exception('Dalam development')
             self.is_login = False
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
@@ -206,7 +162,7 @@ class MainScript(object):
 def save_file(source):
     f = None
     try:
-        f = open('mutasi.html', 'w')
+        f = open('mutasimanpribadi.html', 'w')
         f.write(repr(source))
     except Exception as e:
         log.error(e.args)

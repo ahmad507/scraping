@@ -8,7 +8,6 @@ from app.remote.errorhandler import err_catch, log
 class RemoteDriver(object):
     def __init__(self):
         self.options = webdriver.FirefoxOptions()
-        # noinspection PyBroadException
         try:
             profile = 'firefox_profile'
             self.fp = webdriver.FirefoxProfile(profile)

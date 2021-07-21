@@ -52,3 +52,5 @@ Thumbs.db
 /web.config
 logIIS.log/
 /firefox_profile/
+/*.side
+/*.html

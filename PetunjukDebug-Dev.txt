@@ -1,6 +1,7 @@
 Module Selenium dan Python
 
 Untuk print INFO, setting di app.remote.errorhandler.py
+Sebaiknya gunakan Selenium IDE untuk extention, record dan mudah mendapatkan element
 
 
 --Agar bisa mengetest dengan browser langsung--

@@ -1,15 +1,9 @@
 import os
+from copy import deepcopy
 from datetime import datetime
-
-from flask import Blueprint, send_from_directory
+from pyquery import PyQuery as Pq
+from flask import Blueprint, send_from_directory, jsonify
 from app.remote.errorhandler import log
-
-company = 'MKDG001'
-username = 'HAFSYAH'
-password = 'Tes192021'
-rekening = '1210000448880'
-from_date = 'ga tau'
-to_date = 'sama'
 
 urls = Blueprint('defaults', __name__, )
 
@@ -43,3 +37,35 @@ def print_msg():
     log.info('testing INFO log')
     log.debug('testing DEBUG log')
     return "Check your console", 200
+
+
+# noinspection DuplicatedCode
+@urls.route('/testscrap')
+def test_scrap():
+    f = None
+    result = []
+    try:
+        f = open('mutasi.html', 'r')
+        page_source = Pq(f.read())
+        table_ = Pq(page_source)('.table-div')
+        body_ = Pq(table_)('.tbody .clearfix')
+        div_tr = Pq(body_)('.tr')
+        i = 1
+        for row in div_tr:
+            log.info('Ambil baris: ' + str(i))
+            kolom = {}
+            mutasi = Pq(row)('.td')
+            kolom['tanggal'] = Pq(mutasi[1])('span').text()
+            kolom['keterangan'] = Pq(mutasi[2])('span').text()
+            kolom['code'] = Pq(mutasi[3])('span').text()
+            kolom['debet'] = Pq(mutasi[4])('span').text()
+            kolom['kredit'] = Pq(mutasi[5])('span').text()
+            kolom['saldo'] = Pq(mutasi[6])('span').text()
+            result.append(deepcopy(kolom))
+            i += 1
+    except Exception as e:
+        log.error(e.args)
+    finally:
+        f.close()
+
+    return jsonify(result), 200

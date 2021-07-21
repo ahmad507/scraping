@@ -2,14 +2,14 @@ from flask import Blueprint, request, jsonify
 
 import app
 
-bot = app.MandiriMcm(request)
+bot = app.IbankBca(request)
 
-urls = Blueprint('mandirimcm', __name__, )
+urls = Blueprint('ibankbca', __name__, )
 
 
 @urls.route('/')
 def index():
-    return 'Hello, dari Mandiri MCM', 200
+    return 'Hello, dari Ibank BCA', 200
 
 
 @urls.route('/startdriver')
@@ -54,7 +54,7 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxxx', '07/07/2021', '15/07/2021')
+    result = bot.ambil_mutasi('xxxxxxxx', '07/07/2021', '15/07/2021')
     return jsonify(result), 200
 
 
@@ -89,9 +89,9 @@ def mutasi():
     #     scraping = app.MandiriMcm()
     #     response = scraping.autorun(
     #         company='xxxxx',
-    #         username='xxxx',
-    #         password='xxxxx',
-    #         rekening='xxxxxx',
+    #         username='xxx',
+    #         password='xxxx',
+    #         rekening='xxxxx',
     #     )
     #     result = response
     #     status = 201

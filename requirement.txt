@@ -1,4 +1,5 @@
 # Editable Git install with no remote (BankScript==1.0.0)
+# Python version = 3.8
 click==8.0.1
 colorama==0.4.4
 cssselect==1.1.0

@@ -23,3 +23,5 @@ f.write(repr(form.get_attribute('outerHTML')))
 f.close()
 # innerHTML untuk lihat apa yg diisi
 """
+
+pip freeze > requirement.txt
