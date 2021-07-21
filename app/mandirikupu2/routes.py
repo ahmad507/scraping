@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify
 
 import app
 
-bot = app.IbankBca(request)
+bot = app.MandiriKupu2(request)
 
 urls = Blueprint('mandirikupu2', __name__, )
 
