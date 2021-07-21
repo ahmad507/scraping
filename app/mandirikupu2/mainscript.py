@@ -34,7 +34,7 @@ class MainScript(object):
             self.rekening = rekening
         """ from_date to_date tidak diperlukan"""
         # if from_date is None:
-        #     from_date = datetime.strptime(datetime.now(), '%Y-%m-%d').strftime('%m/%d/%Y')
+        #     from_date = datetime.now().strftime('%d/%m/%Y')
         # if to_date is None:
         #     to_date = from_date
         try:

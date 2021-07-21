@@ -34,7 +34,7 @@ class MainScript(object):
             self.rekening = rekening
         """ from_date to_date tidak diperlukan"""
         # if from_date is None:
-        #     from_date = datetime.strptime(datetime.now(), '%Y-%m-%d').strftime('%m/%d/%Y')
+        #     from_date = datetime.now().strftime('%m/%d/%Y')
         # if to_date is None:
         #     to_date = from_date
         try:
@@ -97,8 +97,7 @@ class MainScript(object):
             Wait(self.driver, 10).until(condition.presence_of_element_located(
                 (By.XPATH, "//h2[contains(.,'Inkuiri Rekening Koran')]")
             ))
-            el_select = Select(self.driver.find_element(By.XPATH, "//select"))
-            el_select.select_by_visible_text('Perorangan')
+            Select(self.driver.find_element(By.XPATH, "//select")).select_by_visible_text('Perorangan')
             Wait(self.driver, 1).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
             )).click()
@@ -116,8 +115,9 @@ class MainScript(object):
             table_ = Pq(self.driver.page_source)('.table-div')
             body_ = Pq(table_)('.tbody .clearfix')
             div_tr = Pq(body_)('.tr')
-            i = 1
+            i = 0
             for row in div_tr:
+                i += 1
                 log.info('Ambil baris: ' + str(i))
                 kolom = {}
                 mutasi = Pq(row)('.td')
@@ -128,7 +128,6 @@ class MainScript(object):
                 kolom['kredit'] = Pq(mutasi[5])('span').text()
                 kolom['saldo'] = Pq(mutasi[6])('span').text()
                 result.append(deepcopy(kolom))
-                i += 1
         except Exception as e:
             log.error(err_catch(e))
         finally:

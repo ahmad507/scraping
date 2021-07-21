@@ -2,7 +2,7 @@ import logging
 import sys
 
 logging.basicConfig(
-    filename='myapp.log',  # Tutup untuk lihat log di console (production di save)
+    filename='myapp.log',  # Tutup untuk lihat log di console (production di save ke myapp.log)
     format='%(asctime)s.%(msecs)03d %(module)s->%(funcName)s: %(levelname)s: %(''message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
@@ -29,9 +29,9 @@ def err_catch(e_less):
 
 
 def headless_web():
-    """Jalan kan Web"""
-    headless = False  # (Production)
-    # headless = True (Bila ingin jalankan Web (jangan di Production))
+    """Jalankan Web secara robot"""
+    headless = True  # (Production)
+    # headless = False  # (Bila ingin jalankan Web (jangan di Production))
     return headless
 
 

@@ -54,7 +54,7 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxxx', '07/07/2021', '15/07/2021')
+    result = bot.ambil_mutasi('xxxxxxxxx')
     return jsonify(result), 200
 
 
@@ -73,9 +73,8 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        scraping = app.MandiriMcm()
         # form_date dan to_date not require
-        response = scraping.autorun(
+        response = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
             password=request.form.get('password'),
@@ -86,8 +85,7 @@ def mutasi():
         result = response
         status = 200
     # else:
-    #     scraping = app.MandiriMcm()
-    #     response = scraping.autorun(
+    #     response = bot.autorun(
     #         company='xxxxx',
     #         username='xxxx',
     #         password='xxxxx',

@@ -56,7 +56,7 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxx', '07/07/2021', '15/07/2021')
+    result = bot.ambil_mutasi('xxxxxxxx', '07-07-2021', '15-07-2021')
     return jsonify(result), 200
 
 
@@ -75,27 +75,25 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        scraping = app.MandiriMcm()
         # form_date dan to_date not require
-        response = scraping.autorun(
+        response = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
             password=request.form.get('password'),
             rekening=request.form.get('rekening'),
-            from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%m/%d/%Y'),
-            to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%m/%d/%Y')
+            from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%d/%m/%Y'),
+            to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
         )
         result = response
         status = 200
     # else:
-    #     scraping = app.MandiriMcm()
-    #     response = scraping.autorun(
+    #     response = bot.autorun(
     #         company='xxxx',
     #         username='xxxxx',
     #         password='xxxx',
     #         rekening='xxxx',
     #         from_date='01/07/2021',
-    #         to_date='15/07/2021',
+    #         to_date='15-07-2021',
     #     )
     #     result = response
     #     status = 201

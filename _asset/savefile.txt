@@ -21,7 +21,7 @@ sleep(1)  # kadang belum muncul
 f = open('file.txt', 'w')
 f.write(repr(form.get_attribute('outerHTML')))
 f.close()
-# innerHTML untuk lihat apa yg diisi
+# innerHTML untuk tulis apa yg diisi
 """
 
 pip freeze > requirement.txt

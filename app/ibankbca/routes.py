@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, request, jsonify
 
 import app
@@ -28,8 +30,8 @@ def ganti_bahasa():
 def login():
     bot.login(
         company='xxxx',
-        username='xxxx',
-        password='xxxxxx',
+        username='xxxxx',
+        password='xxxx',
     )
     return 'login', 200
 
@@ -54,7 +56,8 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxx', '07/07/2021', '15/07/2021')
+    # format date utk melalui post (/mutasi), Y-m-d
+    result = bot.ambil_mutasi('xxxxx', '1/7/2021', '20/7/2021')
     return jsonify(result), 200
 
 
@@ -73,25 +76,25 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        scraping = app.MandiriMcm()
         # form_date dan to_date not require
-        response = scraping.autorun(
+        response = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
             password=request.form.get('password'),
             rekening=request.form.get('rekening'),
-            # from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%m/%d/%Y'),
-            # to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%m/%d/%Y')
+            from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%d/%m/%Y'),
+            to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
         )
         result = response
         status = 200
     # else:
-    #     scraping = app.MandiriMcm()
-    #     response = scraping.autorun(
+    #     response = bot.autorun(
     #         company='xxxxx',
-    #         username='xxx',
+    #         username='xxxx',
     #         password='xxxx',
     #         rekening='xxxxx',
+    #         from_date=datetime.strptime('2021-7-20', '%Y-%m-%d').strftime('%d/%m/%Y'),
+    #         to_date=datetime.strptime('2021-7-21', '%Y-%m-%d').strftime('%d/%m/%Y'),
     #     )
     #     result = response
     #     status = 201
