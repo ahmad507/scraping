@@ -4,14 +4,14 @@ from flask import Blueprint, request, jsonify
 
 import app
 
-bot = app.MandiriKupu2(request)
+bot = app.MandiriLivin(request)
 
-urls = Blueprint('mandirikupu2', __name__, )
+urls = Blueprint('mandirilivin', __name__, )
 
 
 @urls.route('/')
 def index():
-    return 'Hello, dari Mandiri Kupu-kupu', 200
+    return 'Hello, dari Mandiri Livin', 200
 
 
 @urls.route('/startdriver')
@@ -31,7 +31,7 @@ def login():
     bot.login(
         company='xxx',
         username='xxxxx',
-        password='xxxx',
+        password='xxxxx',
     )
     return 'login', 200
 
@@ -56,7 +56,8 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxx', '07-07-2021', '15-07-2021')
+    # format date utk melalui post (/mutasi), Y-m-d
+    result = bot.ambil_mutasi('xxxxxxxx', '07/07/2021', '15/07/2021')
     return jsonify(result), 200
 
 
@@ -75,7 +76,6 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        # form_date dan to_date not require
         response = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
@@ -89,11 +89,11 @@ def mutasi():
     # else:
     #     response = bot.autorun(
     #         company='xxxx',
-    #         username='xxxxx',
+    #         username='xxx',
     #         password='xxxx',
-    #         rekening='xxxx',
-    #         from_date='01/07/2021',
-    #         to_date='15-07-2021',
+    #         rekening='xxxxxx',
+    #         from_date='17/07/2021',
+    #         to_date='17/07/2021',
     #     )
     #     result = response
     #     status = 201

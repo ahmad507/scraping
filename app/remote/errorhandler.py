@@ -8,7 +8,7 @@ logging.basicConfig(
 )
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.ERROR)  # set level, Production -> ERROR, Development -> INFO/DEBUG
+log.setLevel(logging.ERROR)  # (Production)
 # log.setLevel(logging.INFO)  # set level, Development -> INFO/DEBUG
 
 

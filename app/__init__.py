@@ -1,7 +1,7 @@
 # noinspection PyUnresolvedReferences
 from .mandirimcm.mainscript import MainScript as MandiriMcm
 # noinspection PyUnresolvedReferences
-from .mandirikupu2.mainscript import MainScript as MandiriKupu2
+from .mandirilivin.mainscript import MainScript as MandiriLivin
 # noinspection PyUnresolvedReferences
 from .ibankbca.mainscript import MainScript as IbankBca
 # noinspection PyUnresolvedReferences

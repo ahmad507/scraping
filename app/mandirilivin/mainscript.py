@@ -1,10 +1,10 @@
 from copy import deepcopy
+from datetime import datetime
 from time import sleep
 
 from pyquery import PyQuery as Pq
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as condition
-from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait as Wait
 
 import app
@@ -22,7 +22,7 @@ class MainScript(object):
         result = False
         try:
             if self.driver is not None:
-                result = self.driver.save_screenshot('ss/mandirikupu2/{}-{}.png'.format(self.rekening, funct_name))
+                result = self.driver.save_screenshot('ss/mandirilivn/{}-{}.png'.format(self.rekening, funct_name))
         except Exception as e:
             log.error('Gagal capture!!!')
             log.error(str(e.args) + ', ' + str(result))
@@ -32,11 +32,10 @@ class MainScript(object):
         result = []
         if rekening is not None:
             self.rekening = rekening
-        """ from_date to_date tidak diperlukan"""
-        # if from_date is None:
-        #     from_date = datetime.now().strftime('%d/%m/%Y')
-        # if to_date is None:
-        #     to_date = from_date
+        if from_date is None:
+            from_date = datetime.now().strftime('%d/%m/%Y')
+        if to_date is None:
+            to_date = from_date
         try:
             log.info('MULAI')
             self.start_driver()
@@ -85,27 +84,51 @@ class MainScript(object):
     # noinspection PyUnusedLocal
     def ambil_mutasi(self, rekening=None, from_date=None, to_date=None):
         result = []
+        if from_date is None:
+            from_date = datetime.now().strftime('%d/%m/%Y')
+        if to_date is None:
+            to_date = from_date
         try:
             log.info('Ambil Mutasi')
-            raise Exception('Dalam development')
+            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+                (By.XPATH, "//a[@id='currentId-"+rekening+"']/div")
+            )).click()
+            Wait(self.driver, 10).until(condition.presence_of_element_located(
+                (By.ID, 'panelSearch')
+            ))
+            self.driver.execute_script("$('#fromDate').val('{}')".format(from_date))
+            self.driver.execute_script("$('#toDate').val('{}')".format(to_date))
+            sleep(2)
+            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+                (By.ID, 'btnSearch')
+            )).click()
+            Wait(self.driver, 10).until(condition.invisibility_of_element(
+                (By.XPATH, "//td[contains(.,'Loading...')]")
+            ))
+            Wait(self.driver, 5).until(condition.presence_of_element_located(
+                (By.ID, 'globalTable')
+            ))
             # sleep(3);save_file(self.driver.page_source)  # Save buat test scrap file html (lihat di main routes.py)
             # copy dari main routes.py /testscrap
-            table_ = Pq(self.driver.page_source)('.table-div')
-            body_ = Pq(table_)('.tbody .clearfix')
-            div_tr = Pq(body_)('.tr')
-            i = 1
-            for row in div_tr:
-                log.info('Ambil baris: ' + str(i))
-                kolom = {}
-                mutasi = Pq(row)('.td')
-                kolom['tanggal'] = Pq(mutasi[1])('span').text()
-                kolom['keterangan'] = Pq(mutasi[2])('span').text()
-                kolom['code'] = Pq(mutasi[3])('span').text()
-                kolom['debet'] = Pq(mutasi[4])('span').text()
-                kolom['kredit'] = Pq(mutasi[5])('span').text()
-                kolom['saldo'] = Pq(mutasi[6])('span').text()
-                result.append(deepcopy(kolom))
-                i += 1
+            table_ = Pq(self.driver.page_source)('#globalTable')
+            body_ = Pq(table_)('table tbody')
+            div_tr = Pq(body_)('tr')
+            if div_tr.length > 1:
+                i = 0
+                for row in div_tr:
+                    i += 1
+                    log.info('Ambil baris: ' + str(i))
+                    kolom = {}
+                    mutasi = Pq(row)('td')
+                    kolom['tanggal'] = Pq(mutasi[0]).text()
+                    kolom['keterangan'] = Pq(mutasi[1]).text()
+                    kolom['code'] = ''
+                    kolom['debet'] = Pq(mutasi[2]).text()
+                    kolom['kredit'] = Pq(mutasi[3]).text()
+                    kolom['saldo'] = ''
+                    result.append(deepcopy(kolom))
+            else:
+                log.info(Pq(div_tr)('td').text())
         except Exception as e:
             log.error(err_catch(e))
         finally:
@@ -115,7 +138,18 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            raise Exception('Dalam development')
+            Wait(self.driver, 10).until(condition.frame_to_be_available_and_switch_to_it(
+                (By.NAME, 'mainFrame')
+            ))
+            Wait(self.driver, 5).until(condition.presence_of_element_located(
+                (By.XPATH, "//html[@id='login-page']")
+            ))
+            self.driver.find_element_by_id('userid_sebenarnya').send_keys(username)
+            self.driver.find_element_by_id('pwd_sebenarnya').send_keys(password)
+            self.driver.find_element_by_id('btnSubmit').click()
+            Wait(self.driver, 10).until(condition.presence_of_element_located(
+                (By.CLASS_NAME, 'mdr-logout')
+            ))
             self.is_login = True
         except Exception as e:
             log.error(err_catch(e))
@@ -130,7 +164,15 @@ class MainScript(object):
     def logout(self):
         try:
             log.info('Logout')
-            raise Exception('Dalam development')
+            Wait(self.driver, 10).until(condition.element_to_be_clickable(
+                (By.CLASS_NAME, 'mdr-logout')
+            )).click()
+            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+                (By.ID, 'btnCancelReg')
+            )).click()
+            Wait(self.driver, 5).until(condition.presence_of_element_located(
+                (By.XPATH, "//html[@id='login-page']")
+            ))
             self.is_login = False
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
@@ -162,7 +204,7 @@ class MainScript(object):
 def save_file(source):
     f = None
     try:
-        f = open('mutasimanpribadi.html', 'w')
+        f = open('mutasimanlivin.html', 'w')
         f.write(repr(source))
     except Exception as e:
         log.error(e.args)

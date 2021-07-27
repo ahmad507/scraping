@@ -76,7 +76,6 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        # form_date dan to_date not require
         response = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),

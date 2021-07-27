@@ -1,1 +1,0 @@
-# Mandiri kupu-kupu
