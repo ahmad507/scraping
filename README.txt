@@ -1,9 +1,9 @@
 -- Install myapp--
 >cd folder
->d:\python38\python.exe -m venv venv
->.\venv\Script\activate
-(venv) >pip install -e .
-(venv) >python -m pip install -r requirements.txt
+>d:\python38\python.exe -m venv py38_env
+>.\py38_env\Script\activate
+(env) >pip install -e .
+(env) >python -m pip install -r requirements.txt
 
 --Version---
 chromedriver.exe utk chrome Ver 91
@@ -27,11 +27,11 @@ copy folder (rust_mozprofile8888) ke path ini, dan rename dgn nama firefox_profi
 -- MANUAL run server --
 --- (venv) >set FLASK_ENV=development  (optional)
 =============================
-(venv) >set FLASK_APP=myapp
-(venv) >flask run --host=localhost --port=1993
+(env) >set FLASK_APP=myapp
+(env) >flask run --host=localhost --port=1993
 # result: * Running on http://localhost:1993/
 -atau-
-(venv) >flask run
+(env) >flask run
 # result: * Running on http://127.0.0.1:5000/
 
 -- Petunjuk Debug dan Development
