@@ -16,7 +16,7 @@ class RemoteDriver(object):
             log.error('Tolong Copy firefox_profile')
             self.fp = webdriver.FirefoxProfile()
 
-    def set_driver(self, headless=True, write_log=False, accept_insecure_cert=False):
+    def set_driver(self, headless=True, write_log=False, accept_insecure_cert=True):
         self.options.headless = headless
         self.options.accept_insecure_certs = accept_insecure_cert
         if write_log:

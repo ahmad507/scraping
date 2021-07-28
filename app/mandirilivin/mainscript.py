@@ -22,7 +22,7 @@ class MainScript(object):
         result = False
         try:
             if self.driver is not None:
-                result = self.driver.save_screenshot('ss/mandirilivn/{}-{}.png'.format(self.rekening, funct_name))
+                result = self.driver.save_screenshot('ss/mandirilivin/{}-{}.png'.format(self.rekening, funct_name))
         except Exception as e:
             log.error('Gagal capture!!!')
             log.error(str(e.args) + ', ' + str(result))

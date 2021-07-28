@@ -8,6 +8,10 @@ class RemoteDriver(object):
         options.add_argument('--no-sandbox')
         options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
                              f'like Gecko) Chrome/79.0.3945.79 Safari/537.36')
+        # options.add_argument('--mute-audio')
+        # options.add_argument('--disable-gpu')
+        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--log-level=3')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         self.options = options

@@ -86,16 +86,16 @@ def mutasi():
         )
         result = response
         status = 200
-    # else:
-    #     response = bot.autorun(
-    #         company='xxxx',
-    #         username='xxx',
-    #         password='xxxx',
-    #         rekening='xxxxxx',
-    #         from_date='17/07/2021',
-    #         to_date='17/07/2021',
-    #     )
-    #     result = response
-    #     status = 201
+    else:
+        response = bot.autorun(
+            company='xxxx',
+            username='syahpril06',
+            password='Sembada17',
+            rekening='1210060608886',
+            from_date='28/07/2021',
+            to_date='28/07/2021',
+        )
+        result = response
+        status = 201
 
     return jsonify(result), status
