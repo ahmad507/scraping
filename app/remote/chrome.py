@@ -4,7 +4,7 @@ from selenium import webdriver
 class RemoteDriver(object):
     def __init__(self):
         options = webdriver.ChromeOptions()
-        # options.add_argument("start-maximized")
+        options.add_argument("start-maximized")
         options.add_argument('--no-sandbox')
         options.add_argument(f'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
                              f'like Gecko) Chrome/79.0.3945.79 Safari/537.36')

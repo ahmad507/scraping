@@ -76,7 +76,7 @@ def mutasi():
     status = 422
 
     if request.method == 'POST':
-        response = bot.autorun(
+        result = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
             password=request.form.get('password'),
@@ -84,18 +84,17 @@ def mutasi():
             from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%d/%m/%Y'),
             to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
         )
-        result = response
-        status = 200
-    else:
-        response = bot.autorun(
-            company='xxxx',
-            username='syahpril06',
-            password='Sembada17',
-            rekening='1210060608886',
-            from_date='28/07/2021',
-            to_date='28/07/2021',
-        )
-        result = response
-        status = 201
+        status = result['status']
+    # else:
+    #     response = bot.autorun(
+    #         company='xxxx',
+    #         username='xxxx',
+    #         password='xxxx',
+    #         rekening='xxx',
+    #         from_date='28/07/2021',
+    #         to_date='28/07/2021',
+    #     )
+    #     result = response
+    #     status = 201
 
     return jsonify(result), status
