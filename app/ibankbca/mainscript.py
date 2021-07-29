@@ -43,12 +43,12 @@ class MainScript(object):
             # self.ganti_bahasa()
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
-            result = {'status': 200, 'code': 'OK', 'message': '', 'data': {'mutasi': response}}
+            result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
             self.logout()
         except Exception as e:
             self.__ss('autorun-error')
             log.error(err_catch(e))
-            result = {'status': 417, 'code': 'ERROR', 'message': 'error - {}'.format(str(e)), 'data': None}
+            result = {'code': 'ERROR', 'message': 'error - {}'.format(str(e)), 'data': None}
         finally:  # driver selalu di quit/close
             if self.is_login:
                 self.logout()

@@ -84,7 +84,10 @@ def mutasi():
             from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%d/%m/%Y'),
             to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
         )
-        status = result['status']
+        if result['code'] == 'OK':
+            status = 200
+        else:
+            status = 417
     # else:
     #     response = bot.autorun(
     #         company='xxxx',
