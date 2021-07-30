@@ -2,9 +2,9 @@
 <configuration>
     <system.webServer>
         <handlers>
-            <add name="PythonViaFastCgi" 
-            path="*" verb="*" modules="FastCgiModule" 
-            scriptProcessor="D:\web\BankScript\venv\Scripts\python.exe|D:\web\\BankScript\venv\Lib\site-packages\wfastcgi.py" 
+            <add name="PythonViaFastCgi"
+            path="*" verb="*" modules="FastCgiModule"
+            scriptProcessor="D:\web\BankScript\venv\Scripts\python.exe|D:\web\BankScript\venv\Lib\site-packages\wfastcgi.py"
             resourceType="Unspecified" requireAccess="Script" />
         </handlers>
     </system.webServer>
@@ -17,6 +17,6 @@
 		<!--add key="APPINSIGHTS_INSTRUMENTATIONKEY" value="__instrumentation_key__" /-->
 		<!--add key="DJANGO_SETTINGS_MODULE" value="my_app.settings" /-->
 		<!--add key="WSGI_PTVSD_SECRET" value="__secret_code__" /-->
-		<add key="WSGI_PTVSD_ADDRESS" value="127.0.0.1:1993" />
+		<!--add key="WSGI_PTVSD_ADDRESS" value="127.0.0.1:1993" /-->
     </appSettings>
 </configuration>

@@ -22,14 +22,13 @@ class MainScript(object):
         result = False
         try:
             if self.driver is not None:
-                result = self.driver.save_screenshot('ss/mandirilivn/{}-{}.png'.format(self.rekening, funct_name))
+                result = self.driver.save_screenshot('ss/mandirilivin/{}-{}.png'.format(self.rekening, funct_name))
         except Exception as e:
             log.error('Gagal capture!!!')
             log.error(str(e.args) + ', ' + str(result))
 
     def autorun(self, company, username, password, rekening=None, from_date=None, to_date=None):
         """autorun get mutasi"""
-        result = []
         if rekening is not None:
             self.rekening = rekening
         if from_date is None:
@@ -42,11 +41,13 @@ class MainScript(object):
             # self.close_popup()  # bila ada popup
             # self.ganti_bahasa()
             self.login(company, username, password)
-            result = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
+            response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
+            result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
             self.logout()
         except Exception as e:
             self.__ss('autorun-error')
             log.error(err_catch(e))
+            result = {'code': 'ERROR', 'message': 'error - {}'.format(str(e)), 'data': None}
         finally:  # driver selalu di quit/close
             if self.is_login:
                 self.logout()
@@ -91,7 +92,7 @@ class MainScript(object):
         try:
             log.info('Ambil Mutasi')
             Wait(self.driver, 5).until(condition.element_to_be_clickable(
-                (By.XPATH, "//a[@id='currentId-"+rekening+"']/div")
+                (By.XPATH, "//a[@id='currentId-" + rekening + "']/div")
             )).click()
             Wait(self.driver, 10).until(condition.presence_of_element_located(
                 (By.ID, 'panelSearch')

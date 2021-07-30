@@ -74,7 +74,7 @@ def mutasi():
 
     if request.method == 'POST':
         # form_date dan to_date not require
-        response = bot.autorun(
+        result = bot.autorun(
             company=request.form.get('company'),
             username=request.form.get('username'),
             password=request.form.get('password'),
@@ -82,8 +82,10 @@ def mutasi():
             # from_date=datetime.strptime(request.form.get('from_date'), '%Y-%m-%d').strftime('%m/%d/%Y'),
             # to_date=datetime.strptime(request.form.get('to_date'), '%Y-%m-%d').strftime('%m/%d/%Y')
         )
-        result = response
-        status = 200
+        if result['code'] == 'OK':
+            status = 200
+        else:
+            status = 417
     # else:
     #     response = bot.autorun(
     #         company='xxxxx',
