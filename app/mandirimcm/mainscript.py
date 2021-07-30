@@ -157,11 +157,12 @@ class MainScript(object):
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila tidak bisa login
         finally:
-            self.__ss('login')
             if self.is_login:
+                self.__ss('login')
                 log.info('Di dalam Login')
             else:
                 log.info('Login Gagal')
+                self.__ss('login-failed')
 
     def logout(self):
         try:
