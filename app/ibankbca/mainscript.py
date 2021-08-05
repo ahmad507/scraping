@@ -153,7 +153,7 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.NAME, 'value(Submit)')
             ))
             sleep(0.8)  # ada bug bila terlalu cepat
