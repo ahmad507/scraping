@@ -114,22 +114,19 @@ class MainScript(object):
             table_ = Pq(self.driver.page_source)('#globalTable')
             body_ = Pq(table_)('table tbody')
             div_tr = Pq(body_)('tr')
-            if div_tr.length > 1:
-                i = 0
-                for row in div_tr:
-                    i += 1
-                    log.info('Ambil baris: ' + str(i))
-                    kolom = {}
-                    mutasi = Pq(row)('td')
-                    kolom['tanggal'] = Pq(mutasi[0]).text()
-                    kolom['keterangan'] = Pq(mutasi[1]).text()
-                    kolom['code'] = ''
-                    kolom['debet'] = Pq(mutasi[2]).text()
-                    kolom['kredit'] = Pq(mutasi[3]).text()
-                    kolom['saldo'] = ''
-                    result.append(deepcopy(kolom))
-            else:
-                log.info(Pq(div_tr)('td').text())
+            i = 0
+            for row in div_tr:
+                i += 1
+                log.info('Ambil baris: ' + str(i))
+                kolom = {}
+                mutasi = Pq(row)('td')
+                kolom['tanggal'] = Pq(mutasi[0]).text()
+                kolom['keterangan'] = Pq(mutasi[1]).text()
+                kolom['code'] = ''
+                kolom['debet'] = Pq(mutasi[2]).text()
+                kolom['kredit'] = Pq(mutasi[3]).text()
+                kolom['saldo'] = ''
+                result.append(deepcopy(kolom))
         except Exception as e:
             log.error(err_catch(e))
         finally:
