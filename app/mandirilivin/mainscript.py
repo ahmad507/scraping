@@ -139,7 +139,7 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            Wait(self.driver, 10).until(condition.frame_to_be_available_and_switch_to_it(
+            Wait(self.driver, 20).until(condition.frame_to_be_available_and_switch_to_it(
                 (By.NAME, 'mainFrame')
             ))
             Wait(self.driver, 5).until(condition.presence_of_element_located(

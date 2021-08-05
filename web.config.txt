@@ -2,14 +2,11 @@
 <configuration>
     <system.webServer>
         <handlers>
-            <add name="PythonViaFastCgi"
-            path="*" verb="*" modules="FastCgiModule"
-            scriptProcessor="D:\web\BankScript\venv\Scripts\python.exe|D:\web\BankScript\venv\Lib\site-packages\wfastcgi.py"
-            resourceType="Unspecified" requireAccess="Script" />
+            <add name="PythonViaFastCgi" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\web\py38_env\Scripts\python.exe|D:\web\py38_env\Lib\site-packages\wfastcgi.py" resourceType="Unspecified" requireAccess="Script" />
         </handlers>
     </system.webServer>
     <appSettings>
-        <add key="PYTHONPATH" value="D:\web\BankScript\venv" />
+        <add key="PYTHONPATH" value="D:\web\py38_env" />
         <add key="WSGI_HANDLER" value="myapp.app" />
         <!-- Optional settings -->
 		<!--add key="WSGI_LOG" value="C:\Logs\my_app.log" /-->
