@@ -91,10 +91,10 @@ class MainScript(object):
             to_date = from_date
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 10).until(condition.element_to_be_clickable(
                 (By.XPATH, "//a[@id='currentId-" + rekening + "']/div")
             )).click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 15).until(condition.presence_of_element_located(
                 (By.ID, 'panelSearch')
             ))
             self.driver.execute_script("$('#fromDate').val('{}')".format(from_date))
@@ -103,7 +103,7 @@ class MainScript(object):
             Wait(self.driver, 5).until(condition.element_to_be_clickable(
                 (By.ID, 'btnSearch')
             )).click()
-            Wait(self.driver, 10).until(condition.invisibility_of_element(
+            Wait(self.driver, 20).until(condition.invisibility_of_element(
                 (By.XPATH, "//td[contains(.,'Loading...')]")
             ))
             Wait(self.driver, 5).until(condition.presence_of_element_located(
@@ -136,7 +136,7 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            Wait(self.driver, 20).until(condition.frame_to_be_available_and_switch_to_it(
+            Wait(self.driver, 30).until(condition.frame_to_be_available_and_switch_to_it(
                 (By.NAME, 'mainFrame')
             ))
             Wait(self.driver, 5).until(condition.presence_of_element_located(
