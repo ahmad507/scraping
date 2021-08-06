@@ -19,7 +19,7 @@ selenium Ver 3 up
 -- Copy Firefox profile (bila menggunakan Firefox) -- (Sy gunakan Chrome)
 setting headless=False di MainScript agar browser jalan
 localhost:1993/{module}/startdriver  # (lihat di routes.py di module)
-url: about:support
+url: about:support  # (Mozilla)
 Buka folder Profile Folder (cth: C:\Users\Syahpril\AppData\Local\Temp\rust_mozprofile8888)
 # ingat yg tanpa add-ons
 copy folder (rust_mozprofile8888) ke path ini, dan rename dgn nama firefox_profile
