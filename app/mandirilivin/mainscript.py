@@ -85,6 +85,7 @@ class MainScript(object):
     # noinspection PyUnusedLocal
     def ambil_mutasi(self, rekening=None, from_date=None, to_date=None):
         result = []
+        mutasi = None
         if from_date is None:
             from_date = datetime.now().strftime('%d/%m/%Y')
         if to_date is None:
@@ -120,6 +121,8 @@ class MainScript(object):
                 log.info('Ambil baris: ' + str(i))
                 kolom = {}
                 mutasi = Pq(row)('td')
+                # TODO perbaikan IndexError('list index out of range') di mutasi
+                # if len(mutasi) > 2
                 kolom['tanggal'] = Pq(mutasi[0]).text()
                 kolom['keterangan'] = Pq(mutasi[1]).text()
                 kolom['code'] = ''
@@ -129,6 +132,7 @@ class MainScript(object):
                 result.append(deepcopy(kolom))
         except Exception as e:
             log.error(err_catch(e))
+            log.error('mutasi: ' + repr(mutasi))
         finally:
             self.__ss('ambil_mutasi')
         return result
@@ -136,7 +140,7 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            Wait(self.driver, 30).until(condition.frame_to_be_available_and_switch_to_it(
+            Wait(self.driver, 50).until(condition.frame_to_be_available_and_switch_to_it(
                 (By.NAME, 'mainFrame')
             ))
             Wait(self.driver, 5).until(condition.presence_of_element_located(
@@ -145,7 +149,7 @@ class MainScript(object):
             self.driver.find_element_by_id('userid_sebenarnya').send_keys(username)
             self.driver.find_element_by_id('pwd_sebenarnya').send_keys(password)
             self.driver.find_element_by_id('btnSubmit').click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 20).until(condition.presence_of_element_located(
                 (By.CLASS_NAME, 'mdr-logout')
             ))
             self.is_login = True
