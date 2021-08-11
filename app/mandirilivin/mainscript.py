@@ -120,8 +120,9 @@ class MainScript(object):
                 log.info('Ambil baris: ' + str(i))
                 kolom = {}
                 mutasi = Pq(row)('td')
-                # TODO perbaikan IndexError('list index out of range') di mutasi
-                # if len(mutasi) > 2
+                check_data = Pq(mutasi[0]).text()
+                if check_data[0:14] == 'Tidak ada data':
+                    continue
                 kolom['tanggal'] = Pq(mutasi[0]).text()
                 kolom['keterangan'] = Pq(mutasi[1]).text()
                 kolom['code'] = ''
