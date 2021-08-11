@@ -109,7 +109,9 @@ class MainScript(object):
             Wait(self.driver, 5).until(condition.presence_of_element_located(
                 (By.ID, 'globalTable')
             ))
-            # sleep(3);save_file(self.driver.page_source)  # Save buat test scrap file html (lihat di main routes.py)
+            # sleep(3);
+            # Save buat test scrap file html (lihat di main routes.py)
+            # save_file('ss/mandirilivin/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
             table_ = Pq(self.driver.page_source)('#globalTable')
             body_ = Pq(table_)('table tbody')
@@ -204,10 +206,10 @@ class MainScript(object):
             log.error(err_catch(e))
 
 
-def save_file(source):
+def save_file(file_name, source):
     f = None
     try:
-        f = open('mutasimanlivin.html', 'w')
+        f = open(file_name, 'w', encoding="utf-8")
         f.write(repr(source))
     except Exception as e:
         log.error(e.args)

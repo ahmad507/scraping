@@ -3,6 +3,7 @@ from time import sleep
 
 from pyquery import PyQuery as Pq
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as condition
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait as Wait
@@ -91,18 +92,18 @@ class MainScript(object):
         result = []
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 20).until(condition.element_to_be_clickable(
+            Wait(self.driver, 30).until(condition.element_to_be_clickable(
                 (By.LINK_TEXT, 'Rekening')
             )).click()
             self.driver.find_element_by_xpath("//span[contains(.,'Rekening Koran')]").click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 30).until(condition.presence_of_element_located(
                 (By.XPATH, "//h2[contains(.,'Inkuiri Rekening Koran')]")
             ))
             Select(self.driver.find_element(By.XPATH, "//select")).select_by_visible_text('Perorangan')
-            Wait(self.driver, 1).until(condition.element_to_be_clickable(
+            Wait(self.driver, 10).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
             )).click()
-            Wait(self.driver, 1).until(condition.element_to_be_clickable(
+            Wait(self.driver, 5).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'" + rekening + "')]")
             )).click()
             el_select = Select(self.driver.find_element(By.NAME, 'postingDate'))
@@ -111,7 +112,10 @@ class MainScript(object):
             Wait(self.driver, 10).until(condition.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
-            # sleep(3);save_file(self.driver.page_source)  # Save buat test scrap file html (lihat di main routes.py)
+            self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
+            # sleep(3);
+            # Save buat test scrap file html (lihat di main routes.py)
+            save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
             table_ = Pq(self.driver.page_source)('.table-div')
             body_ = Pq(table_)('.tbody .clearfix')
@@ -170,13 +174,13 @@ class MainScript(object):
     def logout(self):
         try:
             log.info('Logout')
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.CLASS_NAME, 'icon-logout')
             ))
             sleep(0.5)  # sering ada warning sebelum logout
             self.driver.find_element_by_class_name('icon-logout').click()
             # Tunggu sampai benar-benar keluar
-            Wait(self.driver, 5).until(condition.presence_of_element_located(
+            Wait(self.driver, 10).until(condition.presence_of_element_located(
                 (By.XPATH, "//h2[contains(.,'Keluar')]")
             ))
             self.is_login = False
@@ -207,10 +211,10 @@ class MainScript(object):
             log.error(err_catch(e))
 
 
-def save_file(source):
+def save_file(file_name, source):
     f = None
     try:
-        f = open('mutasi.html', 'w')
+        f = open(file_name, 'w', encoding="utf-8")
         f.write(repr(source))
     except Exception as e:
         log.error(e.args)
