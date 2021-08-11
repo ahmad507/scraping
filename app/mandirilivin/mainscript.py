@@ -85,7 +85,6 @@ class MainScript(object):
     # noinspection PyUnusedLocal
     def ambil_mutasi(self, rekening=None, from_date=None, to_date=None):
         result = []
-        mutasi = None
         if from_date is None:
             from_date = datetime.now().strftime('%d/%m/%Y')
         if to_date is None:
@@ -132,7 +131,7 @@ class MainScript(object):
                 result.append(deepcopy(kolom))
         except Exception as e:
             log.error(err_catch(e))
-            log.error('mutasi: ' + repr(mutasi))
+            log.error('Rekening error: ' + rekening)
         finally:
             self.__ss('ambil_mutasi')
         return result
