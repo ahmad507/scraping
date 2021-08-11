@@ -160,7 +160,7 @@ class MainScript(object):
             self.driver.find_element(By.ID, 'user_id').send_keys(username)
             self.driver.find_element(By.ID, 'pswd').send_keys(password)
             self.driver.find_element(By.NAME, 'value(Submit)').click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 20).until(condition.presence_of_element_located(
                 (By.NAME, 'header')
             ))
             frame_header = self.driver.find_element(By.NAME, 'header')
