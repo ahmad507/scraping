@@ -33,6 +33,10 @@ class MainScript(object):
         if rekening is not None:
             self.rekening = rekening
         """ from_date to_date tidak diperlukan"""
+        if company is None:
+            result = {'code': 'ERROR', 'message': 'error - company code required', 'data': None}
+            log.error('MandiriMCM No Rek: {} tidak ada company code [exit]'.format(rekening))
+            return result
         # if from_date is None:
         #     from_date = datetime.now().strftime('%m/%d/%Y')
         # if to_date is None:
