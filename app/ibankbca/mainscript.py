@@ -120,7 +120,9 @@ class MainScript(object):
             Select(self.driver.find_element(By.ID, 'endYr')).select_by_value(end_split[2])
             self.driver.find_element(By.XPATH, "//input[@name='value(submit1)']").click()
             # want_save = self.driver.find_elements_by_tag_name('table')[4].find_elements_by_tag_name('tr')
-            # sleep(3);save_file(repr(want_save #looping))  # Save buat test scrap file html (lihat di main routes.py)
+            # sleep(3);
+            # Save buat test scrap file html (lihat di main routes.py)
+            # save_file('ss/ibankbca/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
             table_ = Pq(self.driver.page_source)('table')[4]
             div_tr = Pq(table_)('tr')
@@ -224,10 +226,10 @@ class MainScript(object):
             log.error(err_catch(e))
 
 
-def save_file(source):
+def save_file(file_name, source):
     f = None
     try:
-        f = open('mutasibca.html', 'w')
+        f = open(file_name, 'w', encoding="utf-8")
         f.write(repr(source))
     except Exception as e:
         log.error(e.args)
