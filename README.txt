@@ -6,7 +6,7 @@
 (env) >python -m pip install -r requirements.txt
 
 --Version---
-chromedriver.exe utk chrome Ver 91
+chromedriver.exe utk chrome Ver 93 (url cek: chrome://version)
 geckodriver Ver 29
 python Ver 3.8
 selenium Ver 3 up

@@ -81,7 +81,7 @@ class MainScript(object):
     def ganti_bahasa(self):
         try:
             log.info('Ganti Bahasa')
-            Wait(self.driver, 30).until(condition.element_to_be_clickable(
+            Wait(self.driver, 60).until(condition.element_to_be_clickable(
                 (By.XPATH, "//button[contains(.,'Bahasa')]")
             ))
             self.driver.find_element(By.XPATH, "//button[contains(.,'Bahasa')]").click()
@@ -104,20 +104,20 @@ class MainScript(object):
                 (By.XPATH, "//h2[contains(.,'Inkuiri Rekening Koran')]")
             ))
             Select(self.driver.find_element(By.XPATH, "//select")).select_by_visible_text('Perorangan')
-            Wait(self.driver, 10).until(condition.element_to_be_clickable(
+            Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
             )).click()
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 10).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'" + rekening + "')]")
             )).click()
             el_select = Select(self.driver.find_element(By.NAME, 'postingDate'))
             el_select.select_by_visible_text('Hari ini')
             self.driver.find_element_by_xpath("//button[@type='submit']").click()
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 20).until(condition.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
-            # sleep(3);
+            sleep(3);
             # Save buat test scrap file html (lihat di main routes.py)
             # save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
