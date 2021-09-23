@@ -118,7 +118,7 @@ class MainScript(object):
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
-            sleep(3);
+            sleep(3)
             # Save buat test scrap file html (lihat di main routes.py)
             # save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
