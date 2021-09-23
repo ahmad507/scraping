@@ -1,6 +1,5 @@
 import os
 
-from app.remote.errorhandler import log
 from selenium import webdriver
 
 
@@ -20,11 +19,9 @@ class RemoteDriver(object):
         options.add_argument('--log-level=3')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        # options.add_argument(r'user-data-dir=D:\web\AlteaKonsor\{}'.format(profile))
-        if os.path.isdir(r'user-data-dir={}\{}'.format(directory, profile)):
-            options.add_argument(r'user-data-dir={}\{}'.format(directory, profile))
-        else:
-            log.error(r'Tolong Copy profile Chrome {}\{}'.format(directory, profile))
+        if not os.path.isdir(r'{}\{}'.format(directory, profile)):
+            os.mkdir(r'{}\{}'.format(directory, profile))
+        options.add_argument(r'user-data-dir={}\{}'.format(directory, profile))
         self.options = options
 
     def set_driver(self, headless=True, write_log=False):
