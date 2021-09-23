@@ -19,6 +19,7 @@ class MainScript(object):
         self.rekening = rekening
         self.is_login = False
         self.driver = None
+        self.count = 0
         self.start_driver()
         # self.close_popup()  # bila ada popup
         # self.ganti_bahasa()
@@ -42,6 +43,12 @@ class MainScript(object):
             to_date = from_date
         try:
             log.info('MULAI')
+            self.count += 1
+            # Agar selalu fresh
+            if self.count > 60:
+                self.quit_driver()
+                self.start_driver()
+                self.count = 0
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}

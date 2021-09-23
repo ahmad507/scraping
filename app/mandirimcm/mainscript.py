@@ -19,9 +19,10 @@ class MainScript(object):
         self.rekening = rekening
         self.is_login = False
         self.driver = None
+        self.count = 0
         self.start_driver()
         # self.close_popup()  # bila ada popup
-        self.ganti_bahasa()
+        self.current_url = self.ganti_bahasa()
 
     def __ss(self, funct_name):
         result = False
@@ -47,6 +48,12 @@ class MainScript(object):
         #     to_date = from_date
         try:
             log.info('MULAI')
+            self.count += 1
+            # Agar selalu fresh
+            if self.count > 60:
+                self.quit_driver()
+                self.start_driver()
+                self.count = 0
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
@@ -118,7 +125,7 @@ class MainScript(object):
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
-            sleep(3)
+            # sleep(3)
             # Save buat test scrap file html (lihat di main routes.py)
             # save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
@@ -185,9 +192,12 @@ class MainScript(object):
             sleep(0.5)  # sering ada warning sebelum logout
             self.driver.find_element_by_class_name('icon-logout').click()
             # Tunggu sampai benar-benar keluar
-            Wait(self.driver, 10).until(condition.presence_of_element_located(
+            Wait(self.driver, 20).until(condition.presence_of_element_located(
                 (By.XPATH, "//h2[contains(.,'Keluar')]")
             ))
+            Wait(self.driver, 10).until(condition.presence_of_element_located(
+                (By.XPATH, '//div/button')
+            )).click()
             self.is_login = False
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
