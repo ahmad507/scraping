@@ -19,10 +19,6 @@ class MainScript(object):
         self.rekening = rekening
         self.is_login = False
         self.driver = None
-        self.count = 0
-        self.start_driver()
-        # self.close_popup()  # bila ada popup
-        self.current_url = self.ganti_bahasa()
 
     def __ss(self, funct_name):
         result = False
@@ -48,12 +44,9 @@ class MainScript(object):
         #     to_date = from_date
         try:
             log.info('MULAI')
-            self.count += 1
-            # Agar selalu fresh
-            if self.count > 60:
-                self.quit_driver()
-                self.start_driver()
-                self.count = 0
+            self.start_driver()
+            # self.close_popup()  # bila ada popup
+            self.ganti_bahasa()
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
@@ -67,6 +60,7 @@ class MainScript(object):
                 self.logout()
             log.info('SELESAI')
             self.__ss('autorun-done')
+            self.quit_driver()
 
         return result
 
@@ -82,7 +76,7 @@ class MainScript(object):
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
         finally:
-            # self.__ss('start_driver')  # init tidak boleh ss
+            # self.__ss('start_driver')
             pass
 
     def ganti_bahasa(self):
@@ -96,7 +90,7 @@ class MainScript(object):
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
         finally:
-            # self.__ss('ganti_bahasa')  # init tidak boleh ss
+            # self.__ss('ganti_bahasa')
             pass
 
     # noinspection DuplicatedCode,PyUnusedLocal
