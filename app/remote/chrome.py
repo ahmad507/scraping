@@ -1,8 +1,12 @@
+import os
+
+from app.remote.errorhandler import log
 from selenium import webdriver
 
 
 class RemoteDriver(object):
-    def __init__(self):
+    def __init__(self, profile='ChromeLocal'):
+        directory = os.getcwd()
         options = webdriver.ChromeOptions()
         options.add_argument("start-maximized")
         options.add_argument('--no-sandbox')
@@ -11,9 +15,16 @@ class RemoteDriver(object):
         options.add_argument('--mute-audio')
         options.add_argument('--disable-gpu')
         options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--disable-software-rasterizer')
+        options.add_argument('--disable-extensions')
         options.add_argument('--log-level=3')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
+        # options.add_argument(r'user-data-dir=D:\web\AlteaKonsor\{}'.format(profile))
+        if os.path.isdir(r'user-data-dir={}\{}'.format(directory, profile)):
+            options.add_argument(r'user-data-dir={}\{}'.format(directory, profile))
+        else:
+            log.error(r'Tolong Copy profile Chrome {}\{}'.format(directory, profile))
         self.options = options
 
     def set_driver(self, headless=True, write_log=False):
