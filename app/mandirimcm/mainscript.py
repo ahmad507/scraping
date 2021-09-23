@@ -15,9 +15,13 @@ from app.remote.errorhandler import log, err_catch, log_driver, headless_web
 class MainScript(object):
     def __init__(self, rekening='ss_test'):
         self._url = 'https://mcm2.bankmandiri.co.id'
+        self.profile = 'Chrome_mandirimcm'
         self.rekening = rekening
         self.is_login = False
         self.driver = None
+        self.start_driver()
+        # self.close_popup()  # bila ada popup
+        self.ganti_bahasa()
 
     def __ss(self, funct_name):
         result = False
@@ -43,9 +47,6 @@ class MainScript(object):
         #     to_date = from_date
         try:
             log.info('MULAI')
-            self.start_driver()
-            # self.close_popup()  # bila ada popup
-            self.ganti_bahasa()
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
@@ -54,29 +55,28 @@ class MainScript(object):
             self.__ss('autorun-error')
             log.error(err_catch(e))
             result = {'code': 'ERROR', 'message': 'error - {}'.format(str(e)), 'data': None}
-        finally:  # driver selalu di quit/close
+        finally:  # selalu di logout
             if self.is_login:
                 self.logout()
             log.info('SELESAI')
             self.__ss('autorun-done')
-            self.quit_driver()
 
         return result
 
     def start_driver(self):
         try:
             log.info('Start Driver')
-            driver = app.ChromeDriver()  # Pilih driver: ChromeDriver() atau FirefoxDriver()
             headless = headless_web()
             write_log = log_driver()
+            driver = app.ChromeDriver(profile=self.profile)  # Pilih driver: ChromeDriver() atau FirefoxDriver()
             self.driver = driver.set_driver(headless=headless, write_log=write_log)
             self.driver.get(self._url)
         except Exception as e:
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
         finally:
-            # self.__ss('start_driver')
-            pass  # Jarang gagal
+            # self.__ss('start_driver')  # init tidak boleh ss
+            pass
 
     def ganti_bahasa(self):
         try:
@@ -89,7 +89,8 @@ class MainScript(object):
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
         finally:
-            self.__ss('ganti_bahasa')
+            # self.__ss('ganti_bahasa')  # init tidak boleh ss
+            pass
 
     # noinspection DuplicatedCode,PyUnusedLocal
     def ambil_mutasi(self, rekening=None, from_date=None, to_date=None):
@@ -117,7 +118,7 @@ class MainScript(object):
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
-            sleep(3);
+            sleep(3)
             # Save buat test scrap file html (lihat di main routes.py)
             # save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap

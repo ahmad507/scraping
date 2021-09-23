@@ -1,8 +1,11 @@
+import os
+
 from selenium import webdriver
 
 
 class RemoteDriver(object):
-    def __init__(self):
+    def __init__(self, profile='ChromeLocal'):
+        directory = os.getcwd()
         options = webdriver.ChromeOptions()
         options.add_argument("start-maximized")
         options.add_argument('--no-sandbox')
@@ -11,9 +14,14 @@ class RemoteDriver(object):
         options.add_argument('--mute-audio')
         options.add_argument('--disable-gpu')
         options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--disable-software-rasterizer')
+        options.add_argument('--disable-extensions')
         options.add_argument('--log-level=3')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
+        if not os.path.isdir(r'{}\{}'.format(directory, profile)):
+            os.mkdir(r'{}\{}'.format(directory, profile))
+        options.add_argument(r'user-data-dir={}\{}'.format(directory, profile))
         self.options = options
 
     def set_driver(self, headless=True, write_log=False):
