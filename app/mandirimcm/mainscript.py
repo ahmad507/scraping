@@ -119,7 +119,9 @@ class MainScript(object):
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
-            # sleep(3)
+            Wait(self.driver, 10).until(condition.visibility_of_element_located(
+                (By.CSS_SELECTOR, '.table-scroll-container')
+            ))
             # Save buat test scrap file html (lihat di main routes.py)
             # save_file('ss/mandirimcm/{}-mutasi.html'.format(rekening), self.driver.page_source)
             # copy dari main routes.py /testscrap
@@ -132,6 +134,7 @@ class MainScript(object):
                 log.info('Ambil baris: ' + str(i))
                 kolom = {}
                 mutasi = Pq(row)('.td')
+                #log.info(Pq(mutasi[2])('span').text())
                 kolom['tanggal'] = Pq(mutasi[1])('span').text()
                 kolom['keterangan'] = Pq(mutasi[2])('span').text()
                 kolom['code'] = Pq(mutasi[3])('span').text()
