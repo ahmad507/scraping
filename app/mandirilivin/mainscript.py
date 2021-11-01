@@ -153,7 +153,7 @@ class MainScript(object):
             self.driver.find_element_by_id('userid_sebenarnya').send_keys(username)
             self.driver.find_element_by_id('pwd_sebenarnya').send_keys(password)
             self.driver.find_element_by_id('btnSubmit').click()
-            Wait(self.driver, 20).until(condition.presence_of_element_located(
+            Wait(self.driver, 40).until(condition.presence_of_element_located(
                 (By.CLASS_NAME, 'mdr-logout')
             ))
             self.is_login = True
