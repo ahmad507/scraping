@@ -18,8 +18,6 @@ class MainScript(object):
         self.rekening = rekening
         self.is_login = False
         self.driver = None
-        self.count_login = 0
-        self.start = False
 
     def __ss(self, funct_name):
         result = False
@@ -40,10 +38,9 @@ class MainScript(object):
             to_date = from_date
         try:
             log.info('MULAI')
-            if not self.start:
-                self.start_driver()
-                # self.close_popup()  # bila ada popup
-                # self.ganti_bahasa()
+            self.start_driver()
+            # self.close_popup()  # bila ada popup
+            # self.ganti_bahasa()
             self.login(company, username, password)
             response = self.ambil_mutasi(rekening=self.rekening, from_date=from_date, to_date=to_date)
             result = {'code': 'OK', 'message': '', 'data': {'mutasi': response}}
@@ -57,8 +54,7 @@ class MainScript(object):
                 self.logout()
             log.info('SELESAI')
             self.__ss('autorun-done')
-            if self.count_login > 50:
-                self.quit_driver()
+            self.quit_driver()
 
         return result
 
@@ -70,8 +66,6 @@ class MainScript(object):
             driver = app.ChromeDriver(profile=self.profile)  # Pilih driver: ChromeDriver() atau FirefoxDriver()
             self.driver = driver.set_driver(headless=headless, write_log=write_log)
             self.driver.get(self._url)
-            self.count_login = 0
-            self.start = True
         except Exception as e:
             log.error(err_catch(e))
             raise Exception(e)  # Stop bila gagal
@@ -150,7 +144,6 @@ class MainScript(object):
     def login(self, company, username, password):
         try:
             log.info('Mencoba Login')
-            self.count_login += 1
             Wait(self.driver, 70).until(condition.frame_to_be_available_and_switch_to_it(
                 (By.NAME, 'mainFrame')
             ))
@@ -212,8 +205,6 @@ class MainScript(object):
     def quit_driver(self):
         try:
             self.driver.quit()
-            self.start = False
-            self.count_login = 0
         except Exception as e:
             log.error(err_catch(e))
 
