@@ -82,7 +82,7 @@ class MainScript(object):
     def ganti_bahasa(self):
         try:
             log.info('Ganti Bahasa')
-            Wait(self.driver, 60).until(condition.element_to_be_clickable(
+            Wait(self.driver, 80).until(condition.element_to_be_clickable(
                 (By.XPATH, "//button[contains(.,'Bahasa')]")
             ))
             self.driver.find_element(By.XPATH, "//button[contains(.,'Bahasa')]").click()
