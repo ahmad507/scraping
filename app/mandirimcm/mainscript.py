@@ -98,7 +98,7 @@ class MainScript(object):
         result = []
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 30).until(condition.element_to_be_clickable(
+            Wait(self.driver, 90).until(condition.element_to_be_clickable(
                 (By.LINK_TEXT, 'Rekening')
             )).click()
             self.driver.find_element_by_xpath("//span[contains(.,'Rekening Koran')]").click()
@@ -118,6 +118,7 @@ class MainScript(object):
             Wait(self.driver, 20).until(condition.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
+            sleep(1)
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
             Wait(self.driver, 10).until(condition.visibility_of_element_located(
                 (By.CSS_SELECTOR, '.table-scroll-container')
