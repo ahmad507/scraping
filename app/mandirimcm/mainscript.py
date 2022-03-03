@@ -98,7 +98,7 @@ class MainScript(object):
         result = []
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 90).until(condition.element_to_be_clickable(
+            Wait(self.driver, 60).until(condition.element_to_be_clickable(
                 (By.LINK_TEXT, 'Rekening')
             )).click()
             self.driver.find_element_by_xpath("//span[contains(.,'Rekening Koran')]").click()
@@ -155,7 +155,7 @@ class MainScript(object):
             Wait(self.driver, 30).until(condition.presence_of_element_located(
                 (By.XPATH, "//label[contains(.,'ID Perusahaan')]//following::input[1]")
             ))
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.XPATH, "//input[@type='password']")
             ))
             form = self.driver.find_element_by_xpath(".//ancestor::form")  # Batasi dari <form hingga </form>
