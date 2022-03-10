@@ -59,7 +59,7 @@ class MainScript(object):
             if self.is_login:
                 self.logout()
             log.info('SELESAI')
-            self.__ss('autorun-done')
+            # self.__ss('autorun-done')
             self.quit_driver()
 
         return result
@@ -109,13 +109,14 @@ class MainScript(object):
             Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
             )).click()
-            Wait(self.driver, 10).until(condition.element_to_be_clickable(
+            Wait(self.driver, 20).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'" + rekening + "')]")
             )).click()
+            sleep(3)
             el_select = Select(self.driver.find_element(By.NAME, 'postingDate'))
             el_select.select_by_visible_text('Hari ini')
             self.driver.find_element_by_xpath("//button[@type='submit']").click()
-            Wait(self.driver, 20).until(condition.presence_of_element_located(
+            Wait(self.driver, 40).until(condition.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
             sleep(1)
@@ -200,7 +201,8 @@ class MainScript(object):
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
         finally:
-            self.__ss('logout')
+            # self.__ss('logout')
+            pass
 
     def close_popup(self):
         try:
