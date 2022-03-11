@@ -55,6 +55,7 @@ class MainScript(object):
             log.info('SELESAI')
             # self.__ss('autorun-done')
             self.quit_driver()
+            sleep(1)
 
         return result
 
