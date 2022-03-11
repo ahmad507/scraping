@@ -25,6 +25,11 @@ Buka folder Profile Folder (cth: C:\Users\Syahpril\AppData\Local\Temp\rust_mozpr
 copy folder (rust_mozprofile8888) ke path ini, dan rename dgn nama firefox_profile
 
 -- MANUAL run server --
+ubah app/remote/errorhandler.py (headless ganti ke False)
+Matikan web server iis bankscript
+ke foldor bankscript
+..\py38_env\Scripts\activate
+
 --- (venv) >set FLASK_ENV=development  (optional)
 =============================
 (env) >set FLASK_APP=myapp
