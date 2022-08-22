@@ -53,8 +53,9 @@ class MainScript(object):
             if self.is_login:
                 self.logout()
             log.info('SELESAI')
-            self.__ss('autorun-done')
+            # self.__ss('autorun-done')
             self.quit_driver()
+            sleep(1)
 
         return result
 
@@ -93,7 +94,7 @@ class MainScript(object):
             to_date = from_date
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 10).until(condition.element_to_be_clickable(
+            Wait(self.driver, 20).until(condition.element_to_be_clickable(
                 (By.XPATH, "//a[@id='currentId-" + rekening + "']/div")
             )).click()
             Wait(self.driver, 15).until(condition.presence_of_element_located(
@@ -185,7 +186,8 @@ class MainScript(object):
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
         finally:
-            self.__ss('logout')
+            # self.__ss('logout')
+            pass
 
     def close_popup(self):
         try:

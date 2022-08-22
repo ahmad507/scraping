@@ -59,8 +59,9 @@ class MainScript(object):
             if self.is_login:
                 self.logout()
             log.info('SELESAI')
-            self.__ss('autorun-done')
+            # self.__ss('autorun-done')
             self.quit_driver()
+            sleep(1)
 
         return result
 
@@ -82,7 +83,7 @@ class MainScript(object):
     def ganti_bahasa(self):
         try:
             log.info('Ganti Bahasa')
-            Wait(self.driver, 60).until(condition.element_to_be_clickable(
+            Wait(self.driver, 80).until(condition.element_to_be_clickable(
                 (By.XPATH, "//button[contains(.,'Bahasa')]")
             ))
             self.driver.find_element(By.XPATH, "//button[contains(.,'Bahasa')]").click()
@@ -98,7 +99,7 @@ class MainScript(object):
         result = []
         try:
             log.info('Ambil Mutasi')
-            Wait(self.driver, 30).until(condition.element_to_be_clickable(
+            Wait(self.driver, 60).until(condition.element_to_be_clickable(
                 (By.LINK_TEXT, 'Rekening')
             )).click()
             self.driver.find_element_by_xpath("//span[contains(.,'Rekening Koran')]").click()
@@ -109,15 +110,17 @@ class MainScript(object):
             Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'Pilih Rekening')]")
             )).click()
-            Wait(self.driver, 10).until(condition.element_to_be_clickable(
+            Wait(self.driver, 20).until(condition.element_to_be_clickable(
                 (By.XPATH, "//span[contains(.,'" + rekening + "')]")
             )).click()
+            sleep(3)
             el_select = Select(self.driver.find_element(By.NAME, 'postingDate'))
             el_select.select_by_visible_text('Hari ini')
             self.driver.find_element_by_xpath("//button[@type='submit']").click()
-            Wait(self.driver, 20).until(condition.presence_of_element_located(
+            Wait(self.driver, 40).until(condition.presence_of_element_located(
                 (By.XPATH, "//div[contains(@class, 'tbody')]")
             ))
+            sleep(1)
             self.driver.find_element_by_xpath("//button[@type='submit']").send_keys(Keys.PAGE_DOWN)
             Wait(self.driver, 10).until(condition.visibility_of_element_located(
                 (By.CSS_SELECTOR, '.table-scroll-container')
@@ -154,7 +157,7 @@ class MainScript(object):
             Wait(self.driver, 30).until(condition.presence_of_element_located(
                 (By.XPATH, "//label[contains(.,'ID Perusahaan')]//following::input[1]")
             ))
-            Wait(self.driver, 5).until(condition.element_to_be_clickable(
+            Wait(self.driver, 15).until(condition.element_to_be_clickable(
                 (By.XPATH, "//input[@type='password']")
             ))
             form = self.driver.find_element_by_xpath(".//ancestor::form")  # Batasi dari <form hingga </form>
@@ -199,7 +202,8 @@ class MainScript(object):
         except (AttributeError, Exception) as e:
             log.error(err_catch(e))
         finally:
-            self.__ss('logout')
+            # self.__ss('logout')
+            pass
 
     def close_popup(self):
         try:
