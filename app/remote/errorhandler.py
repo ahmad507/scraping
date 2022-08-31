@@ -30,8 +30,8 @@ def err_catch(e_less):
 
 def headless_web():
     """Jalankan Web secara robot"""
-    headless = True  # (Production)
-    # headless = False  # (Bila ingin jalankan Web (jangan di Production))
+    # headless = True  # (Production)
+    headless = False  # (Bila ingin jalankan Web (jangan di Production))
     return headless
 
 

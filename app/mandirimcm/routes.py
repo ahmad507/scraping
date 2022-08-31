@@ -27,9 +27,9 @@ def ganti_bahasa():
 @urls.route('/login')
 def login():
     bot.login(
-        company='xxxx',
-        username='xxxx',
-        password='xxxxxx',
+        company='VSQA001',
+        username='vrs01',
+        password='Versa2021',
     )
     return 'login', 200
 
@@ -54,7 +54,7 @@ def close_tab():
 
 @urls.route('/ambilmutasi')
 def ambilmutasi():
-    result = bot.ambil_mutasi('xxxxxxxxx')
+    result = bot.ambil_mutasi('1210006595999')
     return jsonify(result), 200
 
 
